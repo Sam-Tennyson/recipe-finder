@@ -1,17 +1,21 @@
 // libs
 import axios from 'axios'
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 
 // constants
 import { APP_BASE_URL, APP_BASE_KEY, APP_BASE_ID } from '../shared/Constants'
 
+// routes
+import { ROUTE_CONSTANTS } from '../shared/Routes'
+
 // components
 import RecipeSearch from '../components/RecipeSearch'
 import RecipeList from '../components/RecipeList'
-import { useNavigate } from 'react-router-dom'
-import { ROUTE_CONSTANTS } from '../shared/Routes'
-import { useDispatch } from 'react-redux'
-import { setSelectedRecipe } from '../store/slice/RecipeSlice'
+
+// action
+import { setRecipeData, setSelectedRecipe } from '../store/slice/RecipeSlice'
 
 const Home = () => {
 
@@ -19,7 +23,7 @@ const Home = () => {
     const navigate = useNavigate();
 
     const [search, setSearch] = useState("");
-    const [displayData, setDisplayData] = useState([])
+    const recipeDataRed = useSelector(state => state.recipe.recipeData) || []
 
     const onChange = (e) => {
         let { value } = e.target
@@ -37,7 +41,7 @@ const Home = () => {
         let URL = APP_BASE_URL + end_point + query_params
         const { data } = await axios.get(URL)
         console.log(URL);
-        setDisplayData(data?.hits)
+        dispatch(setRecipeData(data?.hits))
     }
 
     const handleClick = (data) => {
@@ -57,7 +61,7 @@ const Home = () => {
                     />
                 </div>
                 <div className='mb-2 p-2 w-4/5 mx-auto'>
-                    {displayData?.length ? <RecipeList displayData={displayData} handleClick={handleClick} /> : (
+                    {recipeDataRed?.length ? <RecipeList displayData={recipeDataRed} handleClick={handleClick} /> : (
                         <div className='mt-20 text-center text-2xl text-yellow-900 p-4 rounded-xl'>
                             Search Ingredient to get your desired dish 🎉
                         </div>

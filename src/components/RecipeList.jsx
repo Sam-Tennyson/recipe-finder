@@ -26,11 +26,12 @@ const CommonCard = ({ key, data, handleClick }) => {
                 />
             </div>
             <div className='text-base sm:text-xs p-2'>
-                <p>{data?.recipe?.label}</p>
+                {/* <p>{data?.recipe?.label}</p> */}
                 {/* <div className='flex flex-wrap text'>
                 {data?.recipe?.healthLabels?.map((item) => <span className='text-sm p-1'>{item}</span>)}
             </div> */}
             </div>
+            <div className='recipe-title'>{data?.recipe?.label}</div>
         </div>
     )
 }

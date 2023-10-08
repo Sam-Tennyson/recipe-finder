@@ -7,9 +7,17 @@
 /* Tailwind Styles */
 
 .recipe-detail-class {
-  @apply border-2 border-gray-500 p-2 rounded-lg
+  @apply border-2 border-gray-400 p-2 rounded-lg hover:border-gray-900
 }
 
-body {
+.recipe-h2 {
+  @apply md:text-2xl text-lg underline
+}
+
+.recipe-title {
+  @apply md:text-lg text-lg text-center mb-2
+}
+
+/* body {
   font-family: 'Luckiest Guy';
-} 
+}  */
