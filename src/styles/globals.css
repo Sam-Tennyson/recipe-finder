@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* :root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+  --primary-blue: #c7f1ff;
+  --primary-dark-blue: #a1e0f5;
+} */
+
+
+/* scrollbar.css */
+/* This is for webkit-based browsers like Chrome and Safari */
+/* You may need to use other vendor prefixes for Firefox and IE */
+
+/* Track */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  border-radius: 16px;
+  background: var(--primary-blue); /* Change this to your desired scrollbar color */
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-dark-blue); /* Change this to your desired scrollbar color on hover */
+}
+
+
+/* Tailwind Styles */
+
+.nav-class {
+  @apply text-gray-700 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 font-semibold uppercase font-luckiestGuy tracking-widest
+}
+
+.active-nav {
+  @apply bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium font-luckiestGuy tracking-widest
+}
+
+.menu-button-class {
+  @apply relative inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800
+}
+
+body {
+  font-family: 'Luckiest Guy';
+} 
