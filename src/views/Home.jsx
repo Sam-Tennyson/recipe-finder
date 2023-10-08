@@ -23,15 +23,21 @@ const Home = () => {
     const navigate = useNavigate();
 
     const [search, setSearch] = useState("");
+    const [error, setError] = useState("");
     const recipeDataRed = useSelector(state => state.recipe.recipeData) || []
 
     const onChange = (e) => {
         let { value } = e.target
+        setError("")
         setSearch(value)
     }
 
     const handleSearch = () => {
         console.log(search);
+        if (!search) {
+            setError("Field is required")
+            return;
+        }
         search && getRecipedata()
     }
 
@@ -53,9 +59,11 @@ const Home = () => {
         <>
             <div className='pt-12'>
                 <div className='mb-2'>
-                    <h1 className='md:text-6xl text-4xl text-center mb-2'>Recipe Finder</h1>
+                    <h1 className='md:text-6xl text-4xl text-center mb-4'>Recipe Finder</h1>
                     <RecipeSearch
                         search={search}
+                        error={error}
+                        setError={setError}
                         onChange={onChange}
                         handleSearch={handleSearch}
                     />

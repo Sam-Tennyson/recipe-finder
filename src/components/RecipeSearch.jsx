@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 const SearchComponents = (props) => {
-    const {search, onChange, handleSearch} = props
+    const {search, onChange, handleSearch, error, setError} = props
+
+
     return (
         <>
             <div>
@@ -17,8 +19,7 @@ const SearchComponents = (props) => {
                         className="block w-full p-4 pl-10 text-sm  border  rounded-lg  bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" 
                         placeholder="Search ..."
                         value={search}
-                        onChange={onChange} 
-                        required 
+                        onChange={onChange}  
                     />
                     <button 
                         type="submit" 
@@ -26,6 +27,7 @@ const SearchComponents = (props) => {
                         onClick={handleSearch}
                     >Search</button>
                 </div>
+                {error ? <div className=" relative md:w-1/2 w-4/5 mx-auto font-medium text-red-600">{error}</div>: null}
             </div>
 
         </>
