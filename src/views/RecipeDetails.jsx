@@ -1,7 +1,7 @@
 // libs
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 // routes
 import { ROUTE_CONSTANTS } from '../shared/Routes'
@@ -10,13 +10,12 @@ import { APP_BASE_KEY, APP_BASE_URL } from '../shared/Constants'
 const RecipeDetails = () => {
 
     const navigate = useNavigate();
-    const [searchParams] = useSearchParams()
     const [recipeData, setRecipeData] = useState({})
-    let action_id = searchParams.get('action_id')
+    const {id} = useParams();
 
     useEffect(() => {
         const getRecipedata = async () => {
-            let end_point = `/recipes/${action_id}/information`
+            let end_point = `/recipes/${id}/information`
             let query_params = `?apiKey=${APP_BASE_KEY}`
             let URL = APP_BASE_URL + end_point + query_params
             const { data } = await axios.get(URL)

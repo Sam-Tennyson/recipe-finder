@@ -9,13 +9,16 @@ import RootRouter from './routes/RootRouter'
 // styles
 import "./App.css"
 import { RecipeProvider } from './contexts/RecipeContext'
+import { SearchProvider } from './contexts/SearchContext'
 
 function App() {
 	return (
 		<>
-			<RecipeProvider>
-				<RootRouter />
-			</RecipeProvider>
+			<SearchProvider>
+				<RecipeProvider>
+					<RootRouter />
+				</RecipeProvider>
+			</SearchProvider>
 		</>
 	)
 }
