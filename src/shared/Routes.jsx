@@ -1,4 +1,4 @@
 export const ROUTE_CONSTANTS = {
-    HOME: "/",
+    HOME: "/home",
     RECIPE_DETAILS: "/recipe-details"
 }
