@@ -15,11 +15,12 @@ import RecipeContext from '../contexts/RecipeContext'
 
 const Home = () => {
 
-    const { state: {selectedRecipe:recipeDataRed}, dispatch } = useContext(RecipeContext);
+    const { state: { selectedRecipe: recipeDataRed }, dispatch } = useContext(RecipeContext);
     const navigate = useNavigate();
 
     const [search, setSearch] = useState("");
     const [error, setError] = useState("");
+    const [isApiHit, setIsApiHit] = useState(false);
 
     const onChange = (e) => {
         let { value } = e.target
@@ -29,7 +30,7 @@ const Home = () => {
 
     const handleSearch = () => {
         console.log(search);
-        if (!search) {
+        if (!search.trim()) {
             setError("Field is required")
             return;
         }
@@ -45,11 +46,17 @@ const Home = () => {
         let query_params = `?apiKey=${APP_BASE_KEY}&ingredients=${search}&number=20`
         let URL = APP_BASE_URL + end_point + query_params
         const { data } = await axios.get(URL)
-        storeInContext(data)
+        if (data?.length) {
+            setIsApiHit(false)
+            storeInContext(data)
+        } else {
+            storeInContext([])
+            setIsApiHit(true)
+        }
     }
 
     const handleClick = (data) => navigate(`/recipe-details?action_id=${data?.id}`)
-    
+
     return (
         <>
             <div className='pt-12'>
@@ -66,7 +73,15 @@ const Home = () => {
                 <div className='mb-2 p-2 w-4/5 mx-auto'>
                     {recipeDataRed?.length ? <RecipeList displayData={recipeDataRed} handleClick={handleClick} /> : (
                         <div className='mt-20 text-center text-2xl text-yellow-900 p-4 rounded-xl'>
-                            Search Ingredient to get your desired dish 🎉
+                            {isApiHit ? (
+                                <div className='text-red-800 font-medium text-center'>
+                                    No data is avaliable  <br />You can add another ingredient !
+                                </div>
+                            ) : (
+                                <div className=''>
+                                    Search Ingredient to get your desired dish 🎉
+                                </div>
+                            )}
                         </div>
                     )}
                 </div>
