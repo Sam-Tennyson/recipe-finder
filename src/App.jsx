@@ -1,22 +1,21 @@
 // libs
-import { Provider } from 'react-redux'
 import React from 'react'
 
 // routes
 import RootRouter from './routes/RootRouter'
 
-// store
-import store from './store/store'
+// context
 
 // styles
 import "./App.css"
+import { RecipeProvider } from './contexts/RecipeContext'
 
 function App() {
 	return (
 		<>
-			<Provider store={store}>
+			<RecipeProvider>
 				<RootRouter />
-			</Provider>
+			</RecipeProvider>
 		</>
 	)
 }

@@ -19,19 +19,19 @@ const CommonCard = ({ key, data, handleClick }) => {
                 {isLoading && <Loader />}
                 <img
                     className={`rounded-t-lg h-40 w-full object-cover ${isLoading ?'hidden': 'visited:'} `}
-                    src={data?.recipe?.image}
+                    src={data?.image}
                     onLoad={handleImageLoad}
                     onError={handleImageError}
                     alt=""
                 />
             </div>
             <div className='text-base sm:text-xs p-2'>
-                {/* <p>{data?.recipe?.label}</p> */}
+                {/* <p>{data?.label}</p> */}
                 {/* <div className='flex flex-wrap text'>
-                {data?.recipe?.healthLabels?.map((item) => <span className='text-sm p-1'>{item}</span>)}
+                {data?.healthLabels?.map((item) => <span className='text-sm p-1'>{item}</span>)}
             </div> */}
             </div>
-            <div className='recipe-title'>{data?.recipe?.label}</div>
+            <div className='recipe-title'>{data?.title}</div>
         </div>
     )
 }

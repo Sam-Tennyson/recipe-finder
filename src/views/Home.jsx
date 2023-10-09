@@ -1,30 +1,25 @@
 // libs
 import axios from 'axios'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
 
 // constants
-import { APP_BASE_URL, APP_BASE_KEY, APP_BASE_ID } from '../shared/Constants'
-
-// routes
-import { ROUTE_CONSTANTS } from '../shared/Routes'
+import { APP_BASE_URL, APP_BASE_KEY } from '../shared/Constants'
 
 // components
 import RecipeSearch from '../components/RecipeSearch'
 import RecipeList from '../components/RecipeList'
 
 // action
-import { setRecipeData, setSelectedRecipe } from '../store/slice/RecipeSlice'
+import RecipeContext from '../contexts/RecipeContext'
 
 const Home = () => {
 
-    const dispatch = useDispatch();
+    const { state: {selectedRecipe:recipeDataRed}, dispatch } = useContext(RecipeContext);
     const navigate = useNavigate();
 
     const [search, setSearch] = useState("");
     const [error, setError] = useState("");
-    const recipeDataRed = useSelector(state => state.recipe.recipeData) || []
 
     const onChange = (e) => {
         let { value } = e.target
@@ -41,19 +36,19 @@ const Home = () => {
         search && getRecipedata()
     }
 
+    const storeInContext = (recipe) => {
+        dispatch({ type: "SET_SELECTED_RECIPE", payload: recipe });
+    };
+
     const getRecipedata = async () => {
-        let end_point = `/search`
-        let query_params = `?app_id=${APP_BASE_ID}&app_key=${APP_BASE_KEY}&q=${search}`
+        let end_point = `/recipes/findByIngredients`
+        let query_params = `?apiKey=${APP_BASE_KEY}&ingredients=${search}&number=20`
         let URL = APP_BASE_URL + end_point + query_params
         const { data } = await axios.get(URL)
-        console.log(URL);
-        dispatch(setRecipeData(data?.hits))
+        storeInContext(data)
     }
 
-    const handleClick = (data) => {
-        dispatch(setSelectedRecipe(data?.recipe))
-        navigate(ROUTE_CONSTANTS.RECIPE_DETAILS)
-    }
+    const handleClick = (data) => navigate(`/recipe-details?action_id=${data?.id}`)
     
     return (
         <>

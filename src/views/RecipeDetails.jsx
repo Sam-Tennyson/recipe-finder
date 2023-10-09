@@ -1,19 +1,31 @@
 // libs
-import React, { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 
 // routes
 import { ROUTE_CONSTANTS } from '../shared/Routes'
+import { APP_BASE_KEY, APP_BASE_URL } from '../shared/Constants'
 
 const RecipeDetails = () => {
 
     const navigate = useNavigate();
-    const recipeDetailRed = useSelector(state => state.recipe.selectedRecipe) || null
+    const [searchParams] = useSearchParams()
+    const [recipeData, setRecipeData] = useState({})
+    let action_id = searchParams.get('action_id')
 
     useEffect(() => {
-        if (!recipeDetailRed) navigate(ROUTE_CONSTANTS.HOME)
-    }, [recipeDetailRed])
+        const getRecipedata = async () => {
+            let end_point = `/recipes/${action_id}/information`
+            let query_params = `?apiKey=${APP_BASE_KEY}`
+            let URL = APP_BASE_URL + end_point + query_params
+            const { data } = await axios.get(URL)
+            console.log(data);
+            setRecipeData(data)
+        }
+
+        getRecipedata()
+    }, [])
 
     return (
         <>
@@ -27,7 +39,7 @@ const RecipeDetails = () => {
                         <div className=" mx-auto border-gray-400 rounded-md mb-2">
                             <em>
                                 <img
-                                    src={recipeDetailRed?.image} alt="recipe-detail-image"
+                                    src={recipeData?.image} alt="recipe-detail-image"
                                     className='object-contain text-center w-full max-h-48 mx-auto'
                                 /> </em>
                         </div>
@@ -35,27 +47,32 @@ const RecipeDetails = () => {
                     <div className=" mb-2 md:col-start-4 md:col-end-8 ">
                         <div className="mb-2 recipe-detail-class">
                             <h2 className='recipe-h2'>Title</h2>
-                            <div className=""> {recipeDetailRed?.label}</div>
+                            <div className=""> {recipeData?.title}</div>
                         </div>
                         <div className="mb-2 recipe-detail-class">
-                            <h2 className='recipe-h2'>Ingredients</h2>
-                            {recipeDetailRed?.ingredients?.map((item) => (<span className='mb-2 mr-2' key={item}>{item?.food} .</span>))}
+                            <h2 className='recipe-h2'>Summary</h2>
+                            <div className=""> <div dangerouslySetInnerHTML={{ __html: recipeData?.summary }} /></div>
                         </div>
                         <div className="mb-2 recipe-detail-class">
-                            <h2 className='recipe-h2'>Health Labels</h2>
-                            {recipeDetailRed?.healthLabels?.map((item) => (<span className='mb-2 mr-2' key={item}>{item} .</span>))}
+                            <h2 className='recipe-h2'>Diets</h2>
+                            {recipeData?.diets?.map((item) => (<span className='mb-2 mr-2' key={item}>{item} .</span>))}
                         </div>
                     </div>
                 </div>
 
-                <div className="  mb-2  ">
-                    <div className='recipe-detail-class mb-2 '>
-                        <div className=" ">
-                            <h2 className='recipe-h2'>Instructions</h2>
-                            {recipeDetailRed?.ingredientLines?.map((item) => (<span className='mb-2 mr-2 block' key={item}>{item} .</span>))}
+                {recipeData?.instructions ? (
+
+                    <div className="  mb-2  ">
+                        <div className='recipe-detail-class mb-2 '>
+                            <div className=" ">
+                                <h2 className='recipe-h2'>Instructions</h2>
+
+                                <div dangerouslySetInnerHTML={{ __html: recipeData?.instructions }} />
+                            </div>
                         </div>
                     </div>
-                </div>
+
+                ) : null}
             </div>
         </>
     )
