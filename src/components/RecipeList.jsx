@@ -12,10 +12,10 @@ const CommonCard = ({ key, data, handleClick }) => {
         setIsLoading(false);
     };
     return (
-        <div key={key} className='border border-gray-200 rounded-lg shadow cursor-pointer hover:border-gray-200 hover:border-2'
+        <div key={key} className='border border-gray-200 rounded-lg shadow cursor-pointer hover:border-gray-200 hover:border-2 hover:shadow-md hover:shadow-red-400'
             onClick={() => handleClick(data)}
         >
-            <div className='flex items-center justify-center '>
+            <div className='flex items-center justify-center relative'>
                 {isLoading && <Loader />}
                 <img
                     className={`rounded-t-lg h-40 w-full object-cover ${isLoading ?'hidden': 'visited:'} `}
@@ -24,6 +24,9 @@ const CommonCard = ({ key, data, handleClick }) => {
                     onError={handleImageError}
                     alt=""
                 />
+                <span 
+                    className='absolute top-2 right-2 bg-gray-600 p-2 text-white rounded-md border border-red-400 shadow-md'
+                >{data?.likes}</span>
             </div>
             <div className='text-base sm:text-xs p-2'>
                 {/* <p>{data?.label}</p> */}

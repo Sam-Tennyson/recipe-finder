@@ -5,11 +5,11 @@ import React from 'react'
 import RootRouter from './routes/RootRouter'
 
 // context
+import { RecipeProvider } from './contexts/RecipeContext'
+import { SearchProvider } from './contexts/SearchContext'
 
 // styles
 import "./App.css"
-import { RecipeProvider } from './contexts/RecipeContext'
-import { SearchProvider } from './contexts/SearchContext'
 
 function App() {
 	return (

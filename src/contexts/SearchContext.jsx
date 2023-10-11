@@ -3,7 +3,7 @@ import { SearchReducer } from "../reducers/SearchReducer";
 
 // Define your initial state here
 const initialState = {
-    search: "",
+    search: "Banana",
     err_message: "",
 };
 

@@ -5,24 +5,37 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 // routes
 import { ROUTE_CONSTANTS } from '../shared/Routes'
+
+// constants
 import { APP_BASE_KEY, APP_BASE_URL } from '../shared/Constants'
 
 const RecipeDetails = () => {
 
     const navigate = useNavigate();
     const [recipeData, setRecipeData] = useState({})
-    const {id} = useParams();
+    const { id } = useParams();
 
-    useEffect(() => {
-        const getRecipedata = async () => {
-            let end_point = `/recipes/${id}/information`
-            let query_params = `?apiKey=${APP_BASE_KEY}`
-            let URL = APP_BASE_URL + end_point + query_params
+    // get URL
+    const getUrl = () => {
+        let end_point = `/recipes/${id}/information`
+        let query_params = `?apiKey=${APP_BASE_KEY}`
+        let URL = APP_BASE_URL + end_point + query_params
+        return URL
+    }
+
+    // Get Recipe Details
+    const getRecipedata = async () => {
+        try {
+            let URL = getUrl()
             const { data } = await axios.get(URL)
             console.log(data);
             setRecipeData(data)
+        } catch (error) {
+            console.log(error);
         }
+    }
 
+    useEffect(() => {
         getRecipedata()
     }, [])
 
@@ -58,9 +71,7 @@ const RecipeDetails = () => {
                         </div>
                     </div>
                 </div>
-
                 {recipeData?.instructions ? (
-
                     <div className="  mb-2  ">
                         <div className='recipe-detail-class mb-2 '>
                             <div className=" ">
@@ -70,7 +81,6 @@ const RecipeDetails = () => {
                             </div>
                         </div>
                     </div>
-
                 ) : null}
             </div>
         </>

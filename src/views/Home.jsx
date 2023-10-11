@@ -1,6 +1,6 @@
 // libs
 import axios from 'axios'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 // constants
@@ -21,8 +21,8 @@ const Home = () => {
 
     const { state: { recipeData: recipeDataRed }, dispatch: dispatchRecipe } = useContext(RecipeContext);
     const { state: {search}, dispatch: dispatchSearch } = useContext(SearchContext);
-    const navigate = useNavigate();
 
+    const navigate = useNavigate();
     const [isApiHit, setIsApiHit] = useState(false);
 
     const onChange = (e) => {
@@ -38,23 +38,35 @@ const Home = () => {
         }
         search && getRecipedata()
     }
-
-
-    const getRecipedata = async () => {
+ 
+    const getURL = () => {
         let end_point = `/recipes/findByIngredients`
         let query_params = `?apiKey=${APP_BASE_KEY}&ingredients=${search}&number=20`
         let URL = APP_BASE_URL + end_point + query_params
-        const { data } = await axios.get(URL)
-        if (data?.length) {
-            setIsApiHit(false)
-            dispatchRecipe(setRecipesData(data))
-        } else {
-            dispatchRecipe(setRecipesData(data))
-            setIsApiHit(true)
+        return  URL
+    }
+
+    const getRecipedata = async () => {
+        try {
+            let URL = getURL()
+            const { data } = await axios.get(URL)
+            if (data?.length) {
+                setIsApiHit(false)
+                dispatchRecipe(setRecipesData(data))
+            } else {
+                dispatchRecipe(setRecipesData(data))
+                setIsApiHit(true)
+            }
+        } catch (error) {
+            console.log(error);
         }
     }
 
     const handleClick = (data) => navigate(`/recipe/${data?.id}`)
+
+    useEffect(() => {
+        search && getRecipedata()
+    }, [])
 
     return (
         <>
